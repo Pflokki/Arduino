@@ -2,13 +2,15 @@ int pin_Red = 9;
 int pin_Green = 10;
 int pin_Blue = 11;
 
+int incomingByte = -1;
+
 struct rgbColor {
   unsigned int r;
   unsigned int g;
   unsigned int b;
 };
 
-rgbColor HUE_to_RGB(const int h, const int s, const int v) {
+rgbColor HUE_to_RGB(int h, int s, int v) {
   int h_i = h / 60 % 6;
   int v_min = (100 - s) * v / 100;
   int a = (v - v_min) * (h % 60) / 60;
@@ -32,14 +34,54 @@ rgbColor HUE_to_RGB(const int h, const int s, const int v) {
 
 }
 
-void setup() {
-  // put your setup code here, to run once:
-Serial.begin(9600);
+void set_RGB (rgbColor rgb) {
+  analogWrite(pin_Red, rgb.r);
+  analogWrite(pin_Green, rgb.g);
+  analogWrite(pin_Blue, rgb.b);
+}
+void mode_1() {
+  for (int i = 0; i < 360; i++) {
+    set_RGB(HUE_to_RGB(i, 100, 100));
+    delay(10);
+  }
 
 
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void mode_2() {
 
+}
+
+void mode_3() {
+
+}
+
+void mode_4() {
+
+}
+
+void mode_5() {
+
+}
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(pin_Red, OUTPUT);
+  pinMode(pin_Green, OUTPUT);
+  pinMode(pin_Blue, OUTPUT);
+}
+
+void loop() {
+  mode_1();
+  if (Serial.available())
+    incomingByte = Serial.read();
+
+  switch (incomingByte) {
+    case 1: mode_1(); break;
+    case 2: mode_2(); break;
+    case 3: mode_3(); break;
+    case 4: mode_4(); break;
+    case 5: mode_5(); break;
+  }
 }
