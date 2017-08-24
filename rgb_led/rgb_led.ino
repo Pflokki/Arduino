@@ -2,12 +2,21 @@ int pin_Red = 9;
 int pin_Green = 10;
 int pin_Blue = 11;
 
-int incomingByte = -1;
-
 struct rgbColor {
   unsigned int r;
   unsigned int g;
   unsigned int b;
+};
+
+enum color {
+  RED,
+  ORANGE,
+  YELLOW,
+  GREEN,
+  BLUE,
+  VIOLET,
+  PINK,
+  WHITE
 };
 
 rgbColor HUE_to_RGB(int h, int s, int v) {
@@ -32,6 +41,24 @@ rgbColor HUE_to_RGB(int h, int s, int v) {
 
   return rgb;
 
+}
+
+void set_RGB (color col) {
+  rgbColor rgb;
+  int s = 100;
+  int v = 100;
+  switch (col) {
+    case RED: rgb = HUE_to_RGB(360, s, v); break;
+    case ORANGE: rgb = HUE_to_RGB(25, s, v); break;
+    case YELLOW: rgb = HUE_to_RGB(57, s, v); break;
+    case GREEN: rgb = HUE_to_RGB(120, s, v); break;
+    case BLUE: rgb = HUE_to_RGB(240, s, v); break;
+    case VIOLET: rgb = HUE_to_RGB(275, s, v);break;
+    case PINK: rgb = HUE_to_RGB(310, s, v); break;
+    case WHITE: rgb = HUE_to_RGB(150, 0, 100); break;
+  }
+
+  set_RGB(rgb);
 }
 
 void set_RGB (rgbColor rgb) {
@@ -84,28 +111,12 @@ void mode_5() {
 }
 
 void setup() {
-  Serial.begin(9600);
-
   pinMode(pin_Red, OUTPUT);
   pinMode(pin_Green, OUTPUT);
   pinMode(pin_Blue, OUTPUT);
-
-  //set_RGB(HUE_to_RGB(360, 100, 100));
 }
 
 void loop() {
-  mode_1();
-  if (Serial.available() > 0) {
-    incomingByte = Serial.read();
-    Serial.print("incomingByte: ");
-    Serial.println(incomingByte);
-  }
-  incomingByte = -1;
-  switch (incomingByte) {
-    case 1: mode_1(); break;
-    case 2: mode_2(); break;
-    case 3: mode_3(); break;
-    case 4: mode_4(); break;
-    case 5: mode_5(); break;
-  }
+  mode_2();
+  //set_RGB(ORANGE);
 }
