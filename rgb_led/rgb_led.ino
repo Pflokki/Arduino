@@ -42,22 +42,41 @@ void set_RGB (rgbColor rgb) {
 void mode_1() {
   for (int i = 0; i < 360; i++) {
     set_RGB(HUE_to_RGB(i, 100, 100));
-    delay(10);
+    delay(30);
   }
-
-
 }
 
 void mode_2() {
-
+  for (int i = 0; i < 120; i++) {
+    set_RGB(HUE_to_RGB(i, 100, 100));
+    delay(30);
+  }
+  for (int i = 120; i > 0; i--) {
+    set_RGB(HUE_to_RGB(i, 100, 100));
+    delay(30);
+  }
 }
 
 void mode_3() {
-
+  for (int i = 120; i < 240; i++) {
+    set_RGB(HUE_to_RGB(i, 100, 100));
+    delay(30);
+  }
+  for (int i = 240; i > 120; i--) {
+    set_RGB(HUE_to_RGB(i, 100, 100));
+    delay(30);
+  }
 }
 
 void mode_4() {
-
+  for (int i = 240; i < 360; i++) {
+    set_RGB(HUE_to_RGB(i, 100, 100));
+    delay(30);
+  }
+  for (int i = 360; i > 240; i--) {
+    set_RGB(HUE_to_RGB(i, 100, 100));
+    delay(30);
+  }
 }
 
 void mode_5() {
@@ -70,13 +89,18 @@ void setup() {
   pinMode(pin_Red, OUTPUT);
   pinMode(pin_Green, OUTPUT);
   pinMode(pin_Blue, OUTPUT);
+
+  //set_RGB(HUE_to_RGB(360, 100, 100));
 }
 
 void loop() {
   mode_1();
-  if (Serial.available())
+  if (Serial.available() > 0) {
     incomingByte = Serial.read();
-
+    Serial.print("incomingByte: ");
+    Serial.println(incomingByte);
+  }
+  incomingByte = -1;
   switch (incomingByte) {
     case 1: mode_1(); break;
     case 2: mode_2(); break;
