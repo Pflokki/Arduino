@@ -111,17 +111,36 @@ void mode_4() {
   }
 }
 
+// просмотр всех цветов
 void mode_5() {
-
+  int timeout = 500;
+  set_RGB(RED);
+  delay(timeout);
+  set_RGB(ORANGE);
+  delay(timeout);
+  set_RGB(YELLOW);
+  delay(timeout);
+  set_RGB(GREEN);
+  delay(timeout);
+  set_RGB(BLUE);
+  delay(timeout);
+  set_RGB(VIOLET);
+  delay(timeout);
+  set_RGB(PINK);
+  delay(timeout);
+  set_RGB(WHITE);
+  delay(timeout * 4);
 }
 
 void setup() {
   pinMode(pin_Red, OUTPUT);
   pinMode(pin_Green, OUTPUT);
   pinMode(pin_Blue, OUTPUT);
+
+  mode_5();
 }
 
 void loop() {
-  mode_2();
+  mode_4();
   //set_RGB(ORANGE);
 }
