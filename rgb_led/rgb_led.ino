@@ -66,6 +66,8 @@ void set_RGB (rgbColor rgb) {
   analogWrite(pin_Green, rgb.g);
   analogWrite(pin_Blue, rgb.b);
 }
+
+// весь спектр
 void mode_1() {
   for (int i = 0; i < 360; i++) {
     set_RGB(HUE_to_RGB(i, 100, 100));
@@ -73,34 +75,37 @@ void mode_1() {
   }
 }
 
+// красный, оранжевый, желтый, зеленый
 void mode_2() {
-  for (int i = 0; i < 120; i++) {
+  for (int i = 0; i < 140; i++) {
     set_RGB(HUE_to_RGB(i, 100, 100));
     delay(30);
   }
-  for (int i = 120; i > 0; i--) {
+  for (int i = 140; i > 0; i--) {
     set_RGB(HUE_to_RGB(i, 100, 100));
     delay(30);
   }
 }
 
+// голубой, синий, фиолетоый
 void mode_3() {
-  for (int i = 120; i < 240; i++) {
+  for (int i = 180; i < 280; i++) {
     set_RGB(HUE_to_RGB(i, 100, 100));
     delay(30);
   }
-  for (int i = 240; i > 120; i--) {
+  for (int i = 280; i > 180; i--) {
     set_RGB(HUE_to_RGB(i, 100, 100));
     delay(30);
   }
 }
 
+// фиолетовый, розовый, красный
 void mode_4() {
-  for (int i = 240; i < 360; i++) {
+  for (int i = 280; i < 360; i++) {
     set_RGB(HUE_to_RGB(i, 100, 100));
     delay(30);
   }
-  for (int i = 360; i > 240; i--) {
+  for (int i = 360; i > 280; i--) {
     set_RGB(HUE_to_RGB(i, 100, 100));
     delay(30);
   }
