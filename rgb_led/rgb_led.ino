@@ -69,51 +69,55 @@ void set_RGB (rgbColor rgb) {
 
 // весь спектр
 void mode_1() {
+  int timeout = 100;
   for (int i = 0; i < 360; i++) {
     set_RGB(HUE_to_RGB(i, 100, 100));
-    delay(30);
+    delay(timeout);
   }
 }
 
 // красный, оранжевый, желтый, зеленый
 void mode_2() {
+  int timeout = 100;
   for (int i = 0; i < 140; i++) {
     set_RGB(HUE_to_RGB(i, 100, 100));
-    delay(30);
+    delay(timeout);
   }
   for (int i = 140; i > 0; i--) {
     set_RGB(HUE_to_RGB(i, 100, 100));
-    delay(30);
+    delay(timeout);
   }
 }
 
 // голубой, синий, фиолетоый
 void mode_3() {
+  int timeout = 100;
   for (int i = 180; i < 280; i++) {
     set_RGB(HUE_to_RGB(i, 100, 100));
-    delay(30);
+    delay(timeout);
   }
   for (int i = 280; i > 180; i--) {
     set_RGB(HUE_to_RGB(i, 100, 100));
-    delay(30);
+    delay(timeout);
   }
 }
 
 // фиолетовый, розовый, красный
 void mode_4() {
+  int timeout = 100;
   for (int i = 280; i < 360; i++) {
     set_RGB(HUE_to_RGB(i, 100, 100));
-    delay(30);
+    delay(timeout);
   }
   for (int i = 360; i > 280; i--) {
     set_RGB(HUE_to_RGB(i, 100, 100));
-    delay(30);
+    delay(timeout);
   }
 }
 
 // просмотр всех цветов
 void mode_5() {
-  int timeout = 500;
+  int timeout = 1000;
   set_RGB(RED);
   delay(timeout);
   set_RGB(ORANGE);
@@ -132,6 +136,7 @@ void mode_5() {
   delay(timeout * 4);
 }
 
+// закат
 void sunset() {
   int v = 100;
   int y_timeout = 1000;
@@ -150,6 +155,7 @@ void sunset() {
   delay(f_timeout);
 }
 
+// рассвет
 void sunrise() {
   int v = 100;
   int y_timeout = 1000;
@@ -167,16 +173,18 @@ void sunrise() {
   }
   delay(f_timeout);
 }
+
 void setup() {
   pinMode(pin_Red, OUTPUT);
   pinMode(pin_Green, OUTPUT);
   pinMode(pin_Blue, OUTPUT);
 
-  //mode_5();
+  mode_5();
 }
 
 void loop() {
-  sunset();
-  sunrise();
-  //set_RGB(ORANGE);
+//  sunset();
+//  sunrise();
+//  set_RGB(ORANGE);
+    mode_1();
 }
