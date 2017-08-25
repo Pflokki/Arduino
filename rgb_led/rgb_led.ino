@@ -132,15 +132,51 @@ void mode_5() {
   delay(timeout * 4);
 }
 
+void sunset() {
+  int v = 100;
+  int y_timeout = 1000;
+  int o_timeout = 2000;
+  int f_timeout = 20000;
+  // 1 step: from h = 30 s = 90  v = 100 to h = 30 s = 100 v = 100 with delay = 300
+  for (int s = 90; s <= 100; s++) {
+    set_RGB(HUE_to_RGB(30, s, v));
+    delay(y_timeout);
+  }
+  // 2 step: from h = 30 s = 100 v = 100 to h = 15 s = 100 v = 100 with delay = 500
+  for (int h = 30; h >= 5; h--) {
+      set_RGB(HUE_to_RGB(h, 100, v));
+      delay(o_timeout);
+  }
+  delay(f_timeout);
+}
+
+void sunrise() {
+  int v = 100;
+  int y_timeout = 1000;
+  int o_timeout = 2000;
+  int f_timeout = 20000;
+  // 1 step: from h = 15 s = 100 v = 100 to h = 30 s = 100 v = 100 with delay = 300
+  for (int h = 10; h <= 30; h++) {
+    set_RGB(HUE_to_RGB(h, 100, v));
+    delay(y_timeout);
+  }
+  // 2 step: from h = 30 s = 100 v = 100 to h = 30 s = 90 v = 100 with delay = 500
+  for (int s = 100; s >= 90; s--) {
+      set_RGB(HUE_to_RGB(30, s, v));
+      delay(o_timeout);
+  }
+  delay(f_timeout);
+}
 void setup() {
   pinMode(pin_Red, OUTPUT);
   pinMode(pin_Green, OUTPUT);
   pinMode(pin_Blue, OUTPUT);
 
-  mode_5();
+  //mode_5();
 }
 
 void loop() {
-  mode_4();
+  sunset();
+  sunrise();
   //set_RGB(ORANGE);
 }
