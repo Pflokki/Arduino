@@ -2,6 +2,8 @@ int pin_Red = 9;
 int pin_Green = 10;
 int pin_Blue = 11;
 
+int pin_Button = 2;
+int mode = 0;
 struct rgbColor {
   unsigned int r;
   unsigned int g;
@@ -174,17 +176,44 @@ void sunrise() {
   delay(f_timeout);
 }
 
+void inc_Mode() {
+  mode++;
+
+  if (mode > 15) 
+    mode = 0;
+}
+    
 void setup() {
   pinMode(pin_Red, OUTPUT);
   pinMode(pin_Green, OUTPUT);
   pinMode(pin_Blue, OUTPUT);
 
+  pinMode(pin_Button, INPUT_PULLUP);
+  //digitalWrite(pin_Button, HIGH);
+  attachInterrupt(0, inc_Mode, CHANGE);
+
   mode_5();
 }
 
 void loop() {
-//  sunset();
-//  sunrise();
-//  set_RGB(ORANGE);
-    mode_1();
+  switch (mode) {
+    case 0: mode_1(); break;
+    case 1: mode_2(); break;
+    case 2: mode_3(); break;
+    case 3: mode_4(); break;
+    case 4: mode_5(); break;
+
+    case 5: set_RGB(RED); break;
+    case 6: set_RGB(ORANGE); break;
+    case 7: set_RGB(YELLOW); break;
+    case 8: set_RGB(GREEN); break;
+    case 9: set_RGB(BLUE); break;
+    case 10: set_RGB(VIOLET); break;
+    case 11: set_RGB(PINK); break;
+    case 12: set_RGB(WHITE); break;
+    case 13: mode_5(); break;
+
+    case 14: sunset(); break;
+    case 15: sunrise(); break;
+  }
 }
