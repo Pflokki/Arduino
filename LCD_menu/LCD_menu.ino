@@ -1,5 +1,4 @@
 #include <DHT.h>
-
 #include <IRremote.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
@@ -25,7 +24,7 @@
 //String pick     = "40BF18E7";
 //String ch_set   = "40BF58A7";
 
-
+// 0x3F
 LiquidCrystal_I2C lcd (0x3F,20,4);
 IRrecv irrecv(6);
 DHT dht(4, DHT22);
@@ -73,12 +72,12 @@ decode_results results;
 
 void setup() {
   Serial.begin(9600);
-  lcd.init();
+  lcd.begin();
   lcd.backlight();
-    
+  
+  dht.begin();
   writeMenu(1,1);
   irrecv.enableIRIn();
-  dht.begin();
 }
 
 /*
