@@ -257,10 +257,13 @@ void sunrise() {
 
 void receiveEvent(int bytes) {
 	current_mode = Wire.read();    // read one character from the I2C
+  delay(200);
 }
 
 void led_off() {
-  set_RGB(HUE_to_RGB(0,0,0));
+  analogWrite(pin_Red, 0);
+  analogWrite(pin_Green, 0);
+  analogWrite(pin_Blue, 0);
 }
 
 void setup() {
@@ -273,6 +276,8 @@ void setup() {
 
   pinMode(pin_Button, INPUT_PULLUP);
   digitalWrite(pin_Button, HIGH);
+
+  led_off();
 }
 
 
@@ -283,27 +288,30 @@ void loop() {
 		current_mode++;
 		f_first_enter = true;
 	}
-	if (current_mode > 14)
-		current_mode = 0;
+	if (current_mode > 15)
+		current_mode = 1;
 
+// 0-140    красный, оранжевый, желтый, зеленый
+// 180-280  голубой, синий, фиолетоый
+// 280-360  фиолетовый, розовый, красный
 	switch (current_mode) {
-		case 0: mode_full_spectr(); break;
+		case 0: led_off(); break;
 		case 1: mode_range(0, 140); break;
 		case 2: mode_range(180, 280); break;
 		case 3: mode_range(280, 360); break;
+    case 4: mode_full_spectr(); break;
+    case 5: mode_full_color(); break;
+		case 6: sunset(); break;
+    case 7: sunrise(); break;
+    
+		case 8: set_RGB(RED); break;
+		case 9: set_RGB(ORANGE); break;
+		case 10: set_RGB(YELLOW); break;
+		case 11: set_RGB(GREEN); break;
+		case 12: set_RGB(BLUE); break;
+		case 13: set_RGB(VIOLET); break;
+		case 14: set_RGB(PINK); break;
+		case 15: set_RGB(WHITE); break;
 
-		case 4: set_RGB(RED); break;
-		case 5: set_RGB(ORANGE); break;
-		case 6: set_RGB(YELLOW); break;
-		case 7: set_RGB(GREEN); break;
-		case 8: set_RGB(BLUE); break;
-		case 9: set_RGB(VIOLET); break;
-		case 10: set_RGB(PINK); break;
-		case 11: set_RGB(WHITE); break;
-		case 12: mode_full_color(); break;
-
-		case 13: sunset(); break;
-		case 14: sunrise(); break;
-    case 999: led_off(); break;
   }
 }

@@ -65,8 +65,7 @@ decode_results results;
 	float dht_temp = 0.0;
 	float dht_hum = 0.0;
 
-	unsigned int line_led = 2;
-	unsigned int mode_led = 1;
+	unsigned int mode_led = 0;
 	bool power_led = false;
   
 /*
@@ -210,23 +209,6 @@ void drawLed() {
   
 	lcd.setCursor(18, 2);
 	writeMsg(">");
-
-	lcd.setCursor(1, 3);
-	writeMsg("power:");
-
-	lcd.setCursor(12, 3);
-	writeMsg("<");
-
-	String power = "off";
-	if (power_led)
-	power = "on";
-	else
-	power = "off";
-	lcd.setCursor(14, 3);
-	writeMsg(power);
-  
-	lcd.setCursor(18, 3);
-	writeMsg(">");
 }
 
 
@@ -333,74 +315,36 @@ void menuTime(decode_results results) {
  * Меню освещения
  */
 void menuLed(decode_results results) {
-
-	if (results.value == CH_HIGH) {
-		line_led++;
-		lcd.clear(); 
-		drawLed();
-		lcd.setCursor(0, line_led);
-		writeImage();
-	}
-
-	if (results.value == CH_LOW) {
-		line_led--;
-		lcd.clear(); 
-		drawLed();
-		lcd.setCursor(0, line_led);
-		writeImage();
-	}
     
 	if (results.value == VOL_LOW) {
 		current_menu = 0;
-		line_led = 2;
 		previous_millis = -1;
 		return;
 	}
 
 	if (results.value == PREV) {
-		if (line_led == 2) {
-			mode_led--;
-			i2c_send_message(mode_led);
-		}
-		if (line_led == 3) {
-			power_led = !power_led;
-			if (power_led)
-				i2c_send_message(mode_led);
-			else
-				i2c_send_message(999);
-		}
+		mode_led--;
+		i2c_send_message(mode_led);
+
 		lcd.clear(); 
 		drawLed();
-		lcd.setCursor(0, line_led);
+		lcd.setCursor(0, 2);
 		writeImage();
 	}
 
 	if (results.value == NEXT) {
-		if (line_led == 2) {
-			mode_led++;
-			i2c_send_message(mode_led);
-		}
-		if (line_led == 3) {
-			power_led = !power_led;
-			if (power_led)
-				i2c_send_message(mode_led);
-			else
-				i2c_send_message(999);
-		}
+		mode_led++;
+		i2c_send_message(mode_led);
+
 		lcd.clear(); 
 		drawLed();
-		lcd.setCursor(0, line_led);
+		lcd.setCursor(0, 2);
 		writeImage();
 	}
-    
-	if (line_led > 3)
-		line_led = 2;
-	if (line_led < 2)
-		line_led = 3;
 
 	lcd.clear(); 
 	drawLed();
-	lcd.setCursor(0, line_led);
+	lcd.setCursor(0, 2);
 	writeImage();
 }
 
@@ -438,57 +382,46 @@ void loop() {
 		if (results.value == PLAY) {
 			current_index_of_item_menu = 0;
 			current_menu = 0;
-			line_led = 2;
 			previous_millis = -1;
 		}
 		if (results.value == CH0) {
-			power_led = !power_led;
-			if (power_led)
-				i2c_send_message(mode_led);
-			else 
-				i2c_send_message(999);
+			mode_led = 0;
+			i2c_send_message(0);
 		}
 
 		if (results.value == CH1) {
-			mode_led = 0;
-			power_led = true;
-			
-		}
-		
-		if (results.value == CH2) {
 			mode_led = 1;
-			power_led = true;
 			i2c_send_message(1);
 		}
 		
-		if (results.value == CH3) {
+		if (results.value == CH2) {
 			mode_led = 2;
-			power_led = true;
 			i2c_send_message(2);
 		}
 		
-		if (results.value == CH4) {
+		if (results.value == CH3) {
 			mode_led = 3;
-			power_led = true;
 			i2c_send_message(3);
 		}
 		
+		if (results.value == CH4) {
+			mode_led = 4;
+			i2c_send_message(4);
+		}
+		
 		if (results.value == CH5) {
-			mode_led = 12;
-			power_led = true;
-			i2c_send_message(12);
+			mode_led = 5;
+			i2c_send_message(5);
 		}
 		
 		if (results.value == CH6) {
-			mode_led = 13;
-			power_led = true;
-			i2c_send_message(13);
+			mode_led = 6;
+			i2c_send_message(6);
 		}
 
 		if (results.value == CH7) {
-			mode_led = 14;
-			power_led = true;
-			i2c_send_message(14);
+			mode_led = 7;
+			i2c_send_message(7);
 		}
 
 		switch (current_menu) {
