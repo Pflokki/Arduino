@@ -1,3 +1,4 @@
+#include <Wire.h>
 /*
 	
 	9 - красный, 10 - зеленый, 11 - синий
@@ -8,6 +9,8 @@
 int pin_Red = 9;
 int pin_Green = 10;
 int pin_Blue = 11;
+
+int addres_i2c = 9;
 
 int pin_Button = 2;
 
@@ -252,11 +255,21 @@ void sunrise() {
   }
 }
 
+void receiveEvent(int bytes) {
+	current_mode = Wire.read();    // read one character from the I2C
+}
+
+void led_off() {
+  set_RGB(HUE_to_RGB(0,0,0));
+}
 
 void setup() {
   pinMode(pin_Red, OUTPUT);
   pinMode(pin_Green, OUTPUT);
   pinMode(pin_Blue, OUTPUT);
+
+  Wire.begin(addres_i2c);
+  Wire.onReceive(receiveEvent);
 
   pinMode(pin_Button, INPUT_PULLUP);
   digitalWrite(pin_Button, HIGH);
@@ -291,5 +304,6 @@ void loop() {
 
 		case 13: sunset(); break;
 		case 14: sunrise(); break;
+    case 999: led_off(); break;
   }
 }
