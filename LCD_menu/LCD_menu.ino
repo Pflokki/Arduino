@@ -24,6 +24,8 @@
 //String pick     = "40BF18E7";
 //String ch_set   = "40BF58A7";
 
+int address_i2c_slave = 9;
+
 LiquidCrystal_I2C lcd (0x3F,20,4);
 IRrecv irrecv(6);
 DHT dht(4, DHT22);
@@ -356,10 +358,17 @@ void menuLed(decode_results results) {
 	}
 
 	if (results.value == PREV) {
-		if (line_led == 2)
+		if (line_led == 2) {
 			mode_led--;
-		if (line_led == 3)
+			i2c_send_message(mode_led);
+		}
+		if (line_led == 3) {
 			power_led = !power_led;
+			if (power_led)
+				i2c_send_message(mode_led);
+			else
+				i2c_send_message(999);
+		}
 		lcd.clear(); 
 		drawLed();
 		lcd.setCursor(0, line_led);
@@ -367,10 +376,17 @@ void menuLed(decode_results results) {
 	}
 
 	if (results.value == NEXT) {
-		if (line_led == 2)
+		if (line_led == 2) {
 			mode_led++;
-		if (line_led == 3)
+			i2c_send_message(mode_led);
+		}
+		if (line_led == 3) {
 			power_led = !power_led;
+			if (power_led)
+				i2c_send_message(mode_led);
+			else
+				i2c_send_message(999);
+		}
 		lcd.clear(); 
 		drawLed();
 		lcd.setCursor(0, line_led);
@@ -388,6 +404,12 @@ void menuLed(decode_results results) {
 	writeImage();
 }
 
+void i2c_send_message(int msg) {
+	Wire.beginTransmission(address_i2c_slave); // transmit to device #9
+	Wire.write(msg);              // sends msg 
+	Wire.endTransmission();    // stop transmitting
+}
+
 void setup() {
 	lcd.begin();
 	lcd.backlight();
@@ -395,6 +417,8 @@ void setup() {
 	dht.begin();
 	writeMenu(1, 1);
 	irrecv.enableIRIn();
+
+	Wire.begin();
 
 }
 void loop() {
@@ -419,41 +443,52 @@ void loop() {
 		}
 		if (results.value == CH0) {
 			power_led = !power_led;
+			if (power_led)
+				i2c_send_message(mode_led);
+			else 
+				i2c_send_message(999);
 		}
 
 		if (results.value == CH1) {
 			mode_led = 0;
 			power_led = true;
+			
 		}
 		
 		if (results.value == CH2) {
 			mode_led = 1;
 			power_led = true;
+			i2c_send_message(1);
 		}
 		
 		if (results.value == CH3) {
 			mode_led = 2;
 			power_led = true;
+			i2c_send_message(2);
 		}
 		
 		if (results.value == CH4) {
 			mode_led = 3;
 			power_led = true;
+			i2c_send_message(3);
 		}
 		
 		if (results.value == CH5) {
 			mode_led = 12;
 			power_led = true;
+			i2c_send_message(12);
 		}
 		
 		if (results.value == CH6) {
 			mode_led = 13;
 			power_led = true;
+			i2c_send_message(13);
 		}
 
 		if (results.value == CH7) {
 			mode_led = 14;
 			power_led = true;
+			i2c_send_message(14);
 		}
 
 		switch (current_menu) {
